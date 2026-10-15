@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    overscroll-behavior: none;
+  }
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.gemini-gradient-text {
+  background: linear-gradient(135deg, #1a73e8 0%, #4285f4 30%, #9b51e0 60%, #ea4335 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gemini-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(66, 133, 244, 0.12) 0%, rgba(234, 67, 53, 0.06) 40%, rgba(251, 188, 5, 0.03) 70%, transparent 100%);
+}
+
+.code-editor-font {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}

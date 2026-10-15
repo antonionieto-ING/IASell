@@ -1,0 +1,165 @@
+import { Component } from '@angular/core';
+
+interface PricingTier {
+  name: string;
+  badge?: string;
+  description: string;
+  price: string;
+  period: string;
+  isPopular?: boolean;
+  features: string[];
+  ctaText: string;
+  ctaStyle: string;
+  footnote?: string;
+}
+
+@Component({
+  selector: 'app-pricing',
+  standalone: true,
+  template: `
+    <section class="w-full py-24 bg-surface px-4 sm:px-6" id="precios">
+      <div class="max-w-[1240px] mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+          <span class="inline-block px-3 py-1 rounded-full bg-white border border-border-subtle font-sans text-xs font-semibold text-google-blue uppercase tracking-wider mb-3 shadow-sm">
+            Planes y Suscripciones
+          </span>
+          <h2 class="font-sans text-3xl sm:text-4xl font-extrabold text-on-surface tracking-tight mb-4">
+            Comienza gratis o desbloquea todo el potencial con Pro
+          </h2>
+          <p class="text-secondary-text text-base sm:text-lg">
+            Planes transparentes pensados para usuarios individuales, estudiantes, investigadores y creadores.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
+          <!-- TIER 1: GRATIS -->
+          <div class="bg-white rounded-3xl p-8 border border-border-subtle shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="mb-4">
+                <h3 class="font-sans font-bold text-2xl text-on-surface mb-1">Gratis</h3>
+                <p class="text-xs text-secondary-text">Para explorar y realizar consultas cotidianas.</p>
+              </div>
+              <div class="flex items-baseline gap-1 my-6">
+                <span class="font-sans text-4xl font-extrabold text-on-surface">0€</span>
+                <span class="text-sm text-secondary-text font-medium">/ mes</span>
+              </div>
+              <ul class="space-y-3.5 text-sm text-secondary-text my-6">
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span>Acceso ilimitado a <strong>IASell Flash</strong></span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span>Ventana de contexto de 128K tokens</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span>Generación de imágenes en resolución estándar</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span>Acceso web y app móvil</span>
+                </li>
+              </ul>
+            </div>
+            <a class="w-full py-3 rounded-full bg-surface-variant hover:bg-border-subtle text-on-surface font-sans font-semibold text-center text-sm block transition-all" href="#precios">
+              Comenzar sin costo
+            </a>
+          </div>
+
+          <!-- TIER 2: IASELL PRO (Featured) -->
+          <div class="bg-white rounded-3xl p-8 border-2 border-google-blue shadow-xl relative flex flex-col justify-between transform md:-translate-y-2">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-google-blue text-white text-xs font-sans font-bold px-4 py-1 rounded-full shadow flex items-center gap-1.5 uppercase tracking-wide">
+              <span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span> MÁS POPULAR
+            </div>
+            <div>
+              <div class="mb-4">
+                <div class="flex items-center gap-2">
+                  <h3 class="font-sans font-bold text-2xl text-on-surface mb-1">IASell Pro</h3>
+                  <span class="text-xs bg-google-blue/10 text-google-blue px-2 py-0.5 rounded-full font-sans font-semibold">1 mes gratis</span>
+                </div>
+                <p class="text-xs text-secondary-text">La experiencia definitiva de inteligencia artificial.</p>
+              </div>
+              <div class="flex items-baseline gap-1 my-6">
+                <span class="font-sans text-4xl font-extrabold text-on-surface">19,99€</span>
+                <span class="text-sm text-secondary-text font-medium">/ mes</span>
+              </div>
+              <ul class="space-y-3.5 text-sm text-on-surface my-6">
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check_circle</span>
+                  <span><strong>Acceso prioritario a IASell Ultra 2.5</strong></span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check_circle</span>
+                  <span><strong>Ventana de contexto ampliada a 1M tokens</strong> (sube libros y vídeos enteros)</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check_circle</span>
+                  <span>Ejecución de código en sandbox interactivo</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check_circle</span>
+                  <span>Generación visual 4K fotorrealista sin límites diarios</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check_circle</span>
+                  <span>Creación de Asistentes y Gemelos personalizados</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check_circle</span>
+                  <span>Soporte prioritario 24/7</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p class="text-[11px] text-center text-secondary-text mb-3">1 mes de prueba gratuita, luego 19,99€/mes. Cancela cuando quieras.</p>
+              <a class="w-full py-3.5 rounded-full bg-google-blue hover:bg-google-blue-hover text-white font-sans font-semibold text-center text-sm block shadow-md hover:shadow-lg transition-all" href="#precios">
+                Iniciar prueba de 1 mes gratis
+              </a>
+            </div>
+          </div>
+
+          <!-- TIER 3: ULTRA TEAM -->
+          <div class="bg-white rounded-3xl p-8 border border-border-subtle shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="mb-4">
+                <h3 class="font-sans font-bold text-2xl text-on-surface mb-1">Ultra Team</h3>
+                <p class="text-xs text-secondary-text">Para creadores independientes y equipos ágiles.</p>
+              </div>
+              <div class="flex items-baseline gap-1 my-6">
+                <span class="font-sans text-4xl font-extrabold text-on-surface">39€</span>
+                <span class="text-sm text-secondary-text font-medium">/ mes por usuario</span>
+              </div>
+              <ul class="space-y-3.5 text-sm text-secondary-text my-6">
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span><strong>Todo lo incluido en Pro</strong></span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span><strong>Ventana de contexto máxima de 2M tokens</strong></span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span>Claves de API personales incluidas (10M tokens/mes)</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span>Espacio de trabajo compartido para proyectos</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-google-blue text-[18px] shrink-0 mt-0.5">check</span>
+                  <span>Garantía de privacidad estricta (sin entrenamiento en tus datos)</span>
+                </li>
+              </ul>
+            </div>
+            <a class="w-full py-3 rounded-full bg-on-surface hover:bg-black text-white font-sans font-semibold text-center text-sm block transition-all" href="#precios">
+              Probar Ultra Team
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  `
+})
+export class PricingComponent {}
