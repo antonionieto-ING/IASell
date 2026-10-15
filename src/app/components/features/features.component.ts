@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 interface Feature {
   title: string;
@@ -12,10 +13,11 @@ interface Feature {
 @Component({
   selector: 'app-features',
   standalone: true,
+  imports: [ScrollAnimateDirective],
   template: `
     <section class="w-full py-24 bg-surface-variant/40 px-4 sm:px-6" id="capacidades">
       <div class="max-w-[1240px] mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-16">
+        <div class="text-center max-w-2xl mx-auto mb-16" appScrollAnimate>
           <span class="inline-block px-3 py-1 rounded-full bg-white border border-border-subtle font-sans text-xs font-semibold text-google-blue uppercase tracking-wider mb-3 shadow-sm">
             Capacidades Diseñadas Para Ti
           </span>
@@ -29,23 +31,25 @@ interface Feature {
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           @for (feature of features; track feature.title) {
-            <div class="bg-white rounded-3xl p-6 sm:p-7 border border-border-card shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
-              <div>
-                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
+            <div appScrollAnimate
+                 class="bg-white rounded-3xl p-6 sm:p-7 border border-border-card shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group cursor-pointer relative overflow-hidden">
+              <div class="absolute inset-0 bg-gradient-to-b from-blue-50/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+              <div class="relative z-10">
+                <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300"
                      [class]="feature.colorBg + ' ' + feature.colorText">
                   <span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">
                     {{ feature.icon }}
                   </span>
                 </div>
-                <h3 class="font-sans font-bold text-xl text-on-surface mb-2.5">
+                <h3 class="font-sans font-bold text-xl text-on-surface group-hover:text-google-blue transition-colors mb-2.5">
                   {{ feature.title }}
                 </h3>
                 <p class="text-sm text-secondary-text leading-relaxed mb-6">
                   {{ feature.description }}
                 </p>
               </div>
-              <div class="bg-surface rounded-xl p-3 border border-border-subtle/70 text-xs font-sans text-secondary-text flex items-center gap-2">
-                <span class="material-symbols-outlined text-[18px]" [class]="feature.colorText">check_circle</span>
+              <div class="relative z-10 bg-surface rounded-xl p-3 border border-border-subtle/70 text-xs font-sans text-secondary-text flex items-center gap-2 group-hover:border-google-blue/30 transition-colors">
+                <span class="material-symbols-outlined text-[18px] group-hover:scale-110 transition-transform" [class]="feature.colorText">check_circle</span>
                 <span>{{ feature.tag }}</span>
               </div>
             </div>

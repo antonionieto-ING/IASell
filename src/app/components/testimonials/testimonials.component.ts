@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 interface Testimonial {
   quote: string;
@@ -12,10 +13,11 @@ interface Testimonial {
 @Component({
   selector: 'app-testimonials',
   standalone: true,
+  imports: [ScrollAnimateDirective],
   template: `
     <section class="w-full py-24 bg-white px-4 sm:px-6 border-t border-border-subtle" id="comunidad">
       <div class="max-w-[1240px] mx-auto">
-        <div class="text-center max-w-xl mx-auto mb-16">
+        <div class="text-center max-w-xl mx-auto mb-16" appScrollAnimate>
           <span class="inline-block px-3 py-1 rounded-full bg-surface-variant font-sans text-xs font-semibold text-google-blue uppercase tracking-wider mb-2">
             Comunidad y Creadores
           </span>
@@ -29,19 +31,20 @@ interface Testimonial {
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           @for (item of testimonials; track item.author) {
-            <div class="bg-surface rounded-2xl p-6 border border-border-subtle space-y-4">
-              <div class="flex items-center gap-1 text-google-yellow">
+            <div appScrollAnimate
+                 class="bg-surface rounded-2xl p-6 border border-border-subtle space-y-4 hover:border-google-blue/40 hover:shadow-lg hover:-translate-y-1.5 transition-all duration-300 group cursor-pointer">
+              <div class="flex items-center gap-1 text-google-yellow group-hover:scale-105 transition-transform origin-left">
                 <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
                 <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
               </div>
-              <p class="text-sm text-on-surface leading-relaxed">
+              <p class="text-sm text-on-surface leading-relaxed group-hover:text-black transition-colors">
                 "{{ item.quote }}"
               </p>
               <div class="flex items-center gap-3 pt-2">
-                <div class="w-10 h-10 rounded-full font-bold flex items-center justify-center font-sans text-sm"
+                <div class="w-10 h-10 rounded-full font-bold flex items-center justify-center font-sans text-sm group-hover:scale-110 transition-transform"
                      [class]="item.badgeBg + ' ' + item.badgeText">
                   {{ item.initials }}
                 </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
 
 interface FaqItem {
   question: string;
@@ -9,10 +10,11 @@ interface FaqItem {
 @Component({
   selector: 'app-faq',
   standalone: true,
+  imports: [ScrollAnimateDirective],
   template: `
     <section class="w-full py-20 bg-surface px-4 sm:px-6" id="faq">
       <div class="max-w-3xl mx-auto">
-        <div class="text-center mb-12">
+        <div class="text-center mb-12" appScrollAnimate>
           <h2 class="font-sans text-2xl sm:text-3xl font-extrabold text-on-surface tracking-tight mb-2">
             Preguntas Frecuentes
           </h2>
@@ -23,19 +25,22 @@ interface FaqItem {
 
         <div class="space-y-4">
           @for (faq of faqs; track faq.question; let i = $index) {
-            <div class="bg-white rounded-2xl p-5 border border-border-subtle transition-all cursor-pointer"
+            <div appScrollAnimate
+                 class="bg-white rounded-2xl p-5 border border-border-subtle transition-all duration-300 cursor-pointer hover:border-google-blue/50 hover:shadow-md"
                  [class.ring-1]="faq.isOpen"
                  [class.ring-google-blue-20]="faq.isOpen"
+                 [class.border-google-blue]="faq.isOpen"
                  (click)="toggleFaq(i)">
               <div class="flex justify-between items-center font-sans font-semibold text-on-surface text-base select-none">
-                <span>{{ faq.question }}</span>
-                <span class="material-symbols-outlined text-secondary-text transition-transform duration-200"
-                      [class.rotate-180]="faq.isOpen">
+                <span [class.text-google-blue]="faq.isOpen" class="transition-colors">{{ faq.question }}</span>
+                <span class="material-symbols-outlined text-secondary-text transition-transform duration-300"
+                      [class.rotate-180]="faq.isOpen"
+                      [class.text-google-blue]="faq.isOpen">
                   expand_more
                 </span>
               </div>
               @if (faq.isOpen) {
-                <p class="text-secondary-text text-sm mt-3 leading-relaxed">
+                <p class="text-secondary-text text-sm mt-3 leading-relaxed animate-fadeIn">
                   {{ faq.answer }}
                 </p>
               }
