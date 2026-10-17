@@ -11,11 +11,11 @@ import { Component } from '@angular/core';
           <div class="max-w-[1400px] mx-auto h-9 flex items-center justify-between text-xs sm:text-sm">
             <div class="flex-1 flex items-center justify-center gap-2 text-center overflow-hidden">
               <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-white font-medium text-google-blue shadow-sm border border-google-blue/20 text-[11px]">
-                <span class="material-symbols-outlined text-[13px] text-google-blue" style="font-variation-settings: 'FILL' 1;">auto_awesome</span> Nuevo
+                <span class="material-symbols-outlined text-[13px] text-google-blue" style="font-variation-settings: 'FILL' 1;">confirmation_number</span> Cupón
               </span>
-              <span class="font-medium text-on-surface truncate">IASell Ultra con razonamiento multimodal avanzado ya disponible</span>
-              <a class="text-google-blue hover:text-google-blue-hover font-semibold inline-flex items-center gap-0.5 shrink-0 ml-1 hover:underline" href="#modelos">
-                Ver modelo <span class="text-[13px]">→</span>
+              <span class="font-medium text-on-surface truncate">Prueba por primera vez el cupón y recibe un descuento exclusivo</span>
+              <a class="text-google-blue hover:text-google-blue-hover font-semibold inline-flex items-center gap-0.5 shrink-0 ml-1 hover:underline" href="#precios">
+                Obtener cupón <span class="text-[13px]">→</span>
               </a>
             </div>
             <button aria-label="Cerrar aviso" (click)="dismissBanner()" class="p-1 text-secondary-text hover:text-on-surface rounded-full transition-colors hidden md:block">
