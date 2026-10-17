@@ -55,13 +55,8 @@ import { Component } from '@angular/core';
 
           <!-- Right Side CTA / Auth -->
           <div class="flex items-center gap-3 font-sans text-sm font-medium">
-            <a class="hidden sm:inline-flex px-4 py-2 text-secondary-text hover:text-google-blue hover:bg-surface-variant rounded-full transition-all" href="#precios">
+            <a class="px-5 py-2 text-on-surface hover:text-google-blue hover:bg-surface-variant rounded-full transition-all font-semibold" href="#precios">
               Iniciar sesión
-            </a>
-            <a class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-on-surface text-white hover:bg-google-blue font-semibold shadow-sm hover:shadow-lg hover:shadow-google-blue/25 transition-all duration-300 transform hover:-translate-y-0.5 active:scale-95 group" href="#precios">
-              <span class="material-symbols-outlined text-[17px] text-[#fbbc04] group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">sparkles</span>
-              <span>Probar IASell Pro</span>
-              <span class="hidden lg:inline text-xs bg-white/20 text-white px-2 py-0.5 rounded-full font-normal group-hover:bg-white/30 transition-colors">1 mes gratis</span>
             </a>
           </div>
         </div>
