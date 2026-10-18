@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ScrollAnimateDirective } from '../../directives/scroll-animate.directive';
+import { GeminiService, GeminiResponsePayload } from '../../services/gemini.service';
 
 interface ChatMessage {
   id: string;
@@ -88,9 +89,15 @@ interface ChatMessage {
             </div>
             <!-- Model Switcher Pill in Header -->
             <div class="flex items-center gap-2">
-              <span class="inline-flex items-center gap-1 text-xs font-sans font-semibold px-2.5 py-1 rounded-full bg-white border border-border-subtle text-google-blue shadow-sm">
-                <span class="material-symbols-outlined text-[14px]">bolt</span> IASell Ultra 2.5
-              </span>
+              <button
+                (click)="toggleKeyModal()"
+                [title]="geminiService.hasApiKey() ? 'API Key conectada (Haz clic para cambiar)' : 'Haz clic para conectar tu API Key de Gemini gratis'"
+                class="inline-flex items-center gap-1 text-xs font-sans font-semibold px-2.5 py-1 rounded-full border shadow-sm transition-all"
+                [ngClass]="geminiService.hasApiKey() ? 'bg-green-50 text-green-700 border-green-200' : 'bg-white border-border-subtle text-google-blue hover:border-google-blue'"
+              >
+                <span class="material-symbols-outlined text-[14px]">{{ geminiService.hasApiKey() ? 'check_circle' : 'key' }}</span>
+                <span>{{ geminiService.hasApiKey() ? 'Gemini 1.5 Activo' : 'Conectar API Key' }}</span>
+              </button>
               <span class="text-xs font-sans font-medium px-2 py-0.5 rounded border border-google-blue/20 bg-google-blue/5 text-google-blue hidden sm:inline">
                 {{ userMessagesCount }}/2 mensajes de prueba
               </span>
@@ -159,12 +166,12 @@ interface ChatMessage {
                           <span class="font-sans font-semibold text-xs uppercase tracking-wider text-google-blue">{{ msg.summaryTitle || 'Análisis Completado' }}</span>
                           <span class="text-xs font-mono text-google-green font-bold">{{ msg.summaryMetric || '+28.4% YoY' }}</span>
                         </div>
-                        <p class="text-xs sm:text-sm text-secondary-text leading-relaxed">
+                        <p class="text-xs sm:text-sm text-secondary-text leading-relaxed whitespace-pre-wrap">
                           {{ msg.summaryBody }}
                         </p>
                         <div class="w-full bg-white rounded-xl p-2.5 border border-border-subtle">
                           <div class="flex justify-between text-[11px] font-sans font-medium text-secondary-text mb-1">
-                            <span>Eficiencia Operativa / Precisión</span>
+                            <span>Precisión &amp; Coherencia</span>
                             <span class="text-on-surface font-semibold">{{ msg.efficiency || 96 }}%</span>
                           </div>
                           <div class="w-full bg-surface-variant rounded-full h-2 overflow-hidden">
@@ -213,7 +220,7 @@ interface ChatMessage {
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-google-blue opacity-75"></span>
                     <span class="relative inline-flex rounded-full h-3 w-3 bg-google-blue"></span>
                   </span>
-                  <span class="text-sm font-sans text-secondary-text font-medium">IASell Ultra está razonando tu respuesta en vivo...</span>
+                  <span class="text-sm font-sans text-secondary-text font-medium">IASell Ultra (Gemini 1.5) está procesando tu respuesta en vivo...</span>
                 </div>
               </div>
             }
@@ -237,15 +244,15 @@ interface ChatMessage {
             <!-- Bottom Floating Prompt Bar (Interactive input) -->
             <div class="pt-2">
               <form (submit)="sendMessage($event)" class="relative bg-surface rounded-2xl border border-border-subtle focus-within:border-google-blue/70 focus-within:ring-2 focus-within:ring-google-blue/10 p-2.5 flex items-center gap-3 shadow-inner transition-all">
-                <button type="button" class="p-2 rounded-xl hover:bg-white hover:text-google-blue text-secondary-text transition-all hover:scale-110 active:scale-95" title="Adjuntar documento o imagen">
-                  <span class="material-symbols-outlined text-[20px]">add_circle</span>
+                <button type="button" (click)="toggleKeyModal()" class="p-2 rounded-xl hover:bg-white hover:text-google-blue text-secondary-text transition-all hover:scale-110 active:scale-95" title="Configurar API Key">
+                  <span class="material-symbols-outlined text-[20px]">key</span>
                 </button>
                 <input
                   [(ngModel)]="userInput"
                   name="userInput"
                   [disabled]="isThinking || userMessagesCount >= 2"
                   class="w-full bg-transparent text-sm text-on-surface placeholder-secondary-text focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
-                  [placeholder]="userMessagesCount >= 2 ? 'Límite de prueba alcanzado (2/2). Obtén acceso completo abajo.' : 'Pregunta algo, pide código o prueba el razonamiento de IASell Pro...'"
+                  [placeholder]="userMessagesCount >= 2 ? 'Límite de prueba alcanzado (2/2). Obtén acceso completo abajo.' : 'Pregunta cualquier cosa en el mundo a la IA (2 mensajes gratis)...'"
                   type="text"
                 />
                 <div class="flex items-center gap-2 pr-1">
@@ -265,6 +272,40 @@ interface ChatMessage {
           </div>
         </div>
       </div>
+
+      <!-- Optional API Key Modal -->
+      @if (showKeyModal) {
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-border-subtle space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-google-blue">key</span>
+                <h3 class="font-sans font-bold text-base text-on-surface">Conectar Gemini API Gratis</h3>
+              </div>
+              <button (click)="toggleKeyModal()" class="text-secondary-text hover:text-on-surface">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <p class="text-xs text-secondary-text leading-relaxed">
+              Introduce una API key gratuita de Google AI Studio para que el chat responda en tiempo real a <strong>cualquier pregunta libre del mundo</strong> con Gemini 1.5. Si no introduces ninguna, se usará el motor inteligente integrado.
+            </p>
+            <input
+              type="password"
+              [(ngModel)]="tempApiKey"
+              placeholder="AIzaSy..."
+              class="w-full px-3 py-2 text-sm border rounded-xl border-border-subtle focus:outline-none focus:border-google-blue"
+            />
+            <div class="flex items-center justify-between pt-2">
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-xs text-google-blue hover:underline inline-flex items-center gap-0.5">
+                Obtener clave gratis en Google <span class="text-[12px]">↗</span>
+              </a>
+              <button (click)="saveApiKey()" class="px-4 py-2 bg-google-blue text-white rounded-full font-semibold text-xs hover:bg-google-blue-hover">
+                Guardar y Activar
+              </button>
+            </div>
+          </div>
+        </div>
+      }
     </section>
   `
 })
@@ -273,6 +314,12 @@ export class HeroComponent {
   userInput = '';
   isThinking = false;
   userMessagesCount = 0;
+  showKeyModal = false;
+  tempApiKey = '';
+
+  constructor(public geminiService: GeminiService) {
+    this.tempApiKey = this.geminiService.getApiKey();
+  }
 
   messages: ChatMessage[] = [
     {
@@ -306,13 +353,12 @@ print(f"ROI proyectado: {cagr_expected:.2f}%")
     }
   ];
 
-  sendMessage(event: Event): void {
+  async sendMessage(event: Event): Promise<void> {
     event.preventDefault();
     const query = this.userInput.trim();
     if (!query || this.isThinking || this.userMessagesCount >= 2) return;
 
     this.userMessagesCount++;
-    const currentStep = this.userMessagesCount;
     const userMsgId = 'usr-' + Date.now();
     this.messages.push({
       id: userMsgId,
@@ -324,125 +370,39 @@ print(f"ROI proyectado: {cagr_expected:.2f}%")
     this.userInput = '';
     this.isThinking = true;
 
-    // Simulate intelligent response dynamically based on query
-    setTimeout(() => {
+    try {
+      // Llamada al servicio real de Gemini con fallback inteligente
+      const payload: GeminiResponsePayload = await this.geminiService.askGemini(query);
+
+      this.messages.push({
+        id: 'model-' + Date.now(),
+        sender: 'model',
+        time: 'Ahora',
+        reasoningTime: payload.reasoningTime || '1.1s',
+        pagesIndexed: 'Respuesta generada',
+        tokensProcessed: 'Contexto procesado',
+        summaryTitle: payload.summaryTitle || 'Respuesta IASell Ultra',
+        summaryMetric: payload.summaryMetric || 'Precisión 100%',
+        summaryBody: payload.text,
+        efficiency: payload.efficiency || 98,
+        codeTitle: payload.codeTitle || 'script_solucion.py',
+        codeSnippet: payload.codeSnippet || '# Ejecutado con éxito'
+      });
+    } catch (e) {
+      console.error(e);
+    } finally {
       this.isThinking = false;
-      const modelResponse = this.generateResponse(query, currentStep);
-      this.messages.push(modelResponse);
-    }, 1200);
+    }
   }
 
-  generateResponse(query: string, step: number): ChatMessage {
-    const qLower = query.toLowerCase().trim();
+  toggleKeyModal(): void {
+    this.tempApiKey = this.geminiService.getApiKey();
+    this.showKeyModal = !this.showKeyModal;
+  }
 
-    // 1. Math / Calculations (e.g. 2 elevado a 3, 2^3, operaciones)
-    if (qLower.includes('elevado') || qLower.includes('cuanto es') || qLower.includes('cuánto es') || qLower.includes('calcula') || /\d+\s*[\+\-\*\/\^]\s*\d+/.test(qLower)) {
-      let resultado = '8';
-      let explicacion = '2³ = 2 × 2 × 2 = 8';
-
-      if (qLower.includes('2') && (qLower.includes('3') || qLower.includes('tres'))) {
-        resultado = '8';
-        explicacion = '2 elevado a la 3ª potencia (2³) es igual a 8 (2 × 2 × 2 = 8).';
-      }
-
-      return {
-        id: 'model-' + Date.now(),
-        sender: 'model',
-        time: 'Ahora',
-        reasoningTime: '0.4s',
-        pagesIndexed: 'Motor Simbólico Activo',
-        tokensProcessed: '124 tokens analizados',
-        summaryTitle: 'Cálculo Matemático Resuelto',
-        summaryMetric: `Resultado: ${resultado}`,
-        summaryBody: `La respuesta exacta es ${resultado}. ${explicacion}`,
-        efficiency: 100,
-        codeTitle: 'calculo_potencia.py',
-        codeSnippet: `base = 2
-exponente = 3
-resultado = base ** exponente
-print(f"{base} elevado a {exponente} = {resultado}")
-# >> Salida: 2 elevado a 3 = 8`
-      };
-    }
-
-    // 2. Code / Scripting
-    if (qLower.includes('codigo') || qLower.includes('código') || qLower.includes('python') || qLower.includes('web') || qLower.includes('script') || qLower.includes('api') || qLower.includes('crea') || qLower.includes('funcion')) {
-      return {
-        id: 'model-' + Date.now(),
-        sender: 'model',
-        time: 'Ahora',
-        reasoningTime: '1.1s',
-        pagesIndexed: 'Sintaxis validada',
-        tokensProcessed: '340K tokens analizados',
-        summaryTitle: 'Arquitectura & Código Generado',
-        summaryMetric: '100% Funcional',
-        summaryBody: `He estructurado la solución requerida para "${query.slice(0, 45)}...". Optimizada con tipado estricto, manejo de excepciones y concurrencia asíncrona lista para producción.`,
-        efficiency: 99,
-        codeTitle: 'solution_pipeline.py',
-        codeSnippet: `async def execute_task(payload: dict) -> dict:
-    # Procesado en pipeline IASell Ultra 2.5
-    validated = await schema.verify(payload)
-    result = await ai_engine.dispatch(validated, temp=0.2)
-    return {"status": "success", "data": result, "verified": True}
-# >> Test completado: Latencia 84ms`
-      };
-    }
-
-    // 3. Saludos o preguntas generales
-    if (qLower.includes('hola') || qLower.includes('buenos dias') || qLower.includes('buenas tardes') || qLower.includes('que eres') || qLower.includes('quien eres')) {
-      return {
-        id: 'model-' + Date.now(),
-        sender: 'model',
-        time: 'Ahora',
-        reasoningTime: '0.6s',
-        pagesIndexed: 'Asistente Multimodal Activo',
-        tokensProcessed: '450 tokens',
-        summaryTitle: 'Bienvenido a IASell Pro',
-        summaryMetric: 'En Línea',
-        summaryBody: '¡Hola! Soy el modelo IASell Ultra 2.5. Puedo ayudarte a resolver cálculos matemáticos, programar código en más de 20 lenguajes, analizar informes extensos y redactar contenido con razonamiento avanzado.',
-        efficiency: 100,
-        codeTitle: 'iasell_core.py',
-        codeSnippet: `client = IASellClient(model="ultra-2.5")
-response = client.chat("Hola, ¿en qué puedo ayudarte hoy?")
-print(response.text)`
-      };
-    }
-
-    // 4. Default contextual response
-    if (step === 1) {
-      return {
-        id: 'model-' + Date.now(),
-        sender: 'model',
-        time: 'Ahora',
-        reasoningTime: '1.2s',
-        pagesIndexed: 'Contexto 2M activo',
-        tokensProcessed: '680K tokens',
-        summaryTitle: 'Respuesta Inteligente IASell',
-        summaryMetric: 'Razonamiento Complejo',
-        summaryBody: `Sobre tu consulta "${query}": analizada de manera precisa. El modelo extrae los puntos clave y formula una síntesis directa optimizada para tu flujo de trabajo.`,
-        efficiency: 98,
-        codeTitle: 'insights_engine.py',
-        codeSnippet: `# Análisis predictivo ejecutado
-confidence_score = 0.984
-print(f"Confianza: {confidence_score * 100:.1f}% | Consulta procesada con éxito.")`
-      };
-    } else {
-      return {
-        id: 'model-' + Date.now(),
-        sender: 'model',
-        time: 'Ahora',
-        reasoningTime: '0.9s',
-        pagesIndexed: '2da Interacción completada',
-        tokensProcessed: '910K tokens',
-        summaryTitle: 'Síntesis Final & Solución',
-        summaryMetric: 'Objetivo Cumplido',
-        summaryBody: `Para tu última pregunta de prueba: "${query}". La respuesta ha sido sintetizada con éxito. Has alcanzado el límite de 2 mensajes de demostración en vivo.`,
-        efficiency: 97,
-        codeTitle: 'final_report_export.py',
-        codeSnippet: `report = generate_executive_brief()
-print("Sesión demo completada. ¡Desbloquea el acceso completo con tu cupón!")`
-      };
-    }
+  saveApiKey(): void {
+    this.geminiService.setApiKey(this.tempApiKey);
+    this.showKeyModal = false;
   }
 
   copyAction(): void {
@@ -452,3 +412,4 @@ print("Sesión demo completada. ¡Desbloquea el acceso completo con tu cupón!")
     }, 2000);
   }
 }
+
