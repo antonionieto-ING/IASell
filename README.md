@@ -65,13 +65,13 @@ Los archivos optimizados se generarán en la carpeta `dist/`.
 
 ---
 
-## 🌐 Despliegue en GitHub Pages (Opcional)
+## 🌐 Despliegue Automático en GitHub Pages
 
-El proyecto incluye el comando configurado para compilar con la ruta base adecuada:
+Cada vez que hagas `git push` a la rama `main`, un flujo automatizado de GitHub Actions compila y despliega los cambios en vivo en:
 
-```bash
-npm run build:pages
-```
+👉 **[https://antonionieto-ing.github.io/IASell/](https://antonionieto-ing.github.io/IASell/)**
+
+*(Para activar el despliegue la primera vez: ve a tu repositorio en GitHub -> **Settings** -> **Pages** -> en **Build and deployment: Source**, selecciona **GitHub Actions**).*
 
 ---
 
