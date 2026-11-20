@@ -1,59 +1,80 @@
-# Iasell
+# SellAI (IASell) 🚀
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.27.
+Plataforma SaaS moderna e intuitiva para ventas, automatización y productividad potenciada con Inteligencia Artificial multimodal.
 
-## Development server
+---
 
-To start a local development server, run:
+## ✨ Características Principales
 
+- **🤖 Integración con IA de Última Generación**: Asistente interactivo con razonamiento contextual avanzado y soporte multimodal impulsado por Gemini.
+- **⚡ Rendimiento y Fluidez**: Desarrollada con Angular 19 (Standalone Components) y Tailwind CSS para una interfaz reactiva, moderna y ultra rápida.
+- **🎨 Experiencia Visual de Alto Nivel**:
+  - Animaciones y efectos de scroll dinámicos (`appScrollAnimate`).
+  - Gradientes y efectos glow inspirados en la estética moderna de IA.
+  - Secciones completas: Comparativa de modelos, tablas de precios interactivas, testimonios y preguntas frecuentes (FAQ).
+- **📱 100% Responsive**: Diseñada para una visualización perfecta en móviles, tablets y monitores de escritorio.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+- **Frontend**: [Angular 19](https://angular.dev/)
+- **Estilos**: [Tailwind CSS v3](https://tailwindcss.com/)
+- **Servicios de IA**: Integración directa con Google Gemini API
+- **Lenguaje**: TypeScript & HTML5 semántico
+
+---
+
+## 🚀 Cómo Ejecutar y Visualizar el Proyecto Localmente
+
+### 1. Clonar el repositorio
 ```bash
-ng serve
+git clone https://github.com/anm0200/SellAI.git
+cd SellAI
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### 2. Instalar dependencias
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### 3. Iniciar el servidor de desarrollo
 ```bash
-ng generate --help
+npm start
+# o también:
+# ng serve
 ```
 
-## Building
+### 4. Abrir en el navegador
+Visita en tu navegador favorito:
+👉 **`http://localhost:4200/`**
 
-To build the project run:
+La página cuenta con recarga en vivo (*live reload*), por lo que cualquier cambio que hagas en el código se reflejará al instante.
 
-```bash
-ng build
-```
+---
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📦 Construcción para Producción
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Para compilar la aplicación para producción:
 
 ```bash
-ng test
+npm run build
 ```
 
-## Running end-to-end tests
+Los archivos optimizados se generarán en la carpeta `dist/`.
 
-For end-to-end (e2e) testing, run:
+---
+
+## 🌐 Despliegue en GitHub Pages (Opcional)
+
+El proyecto incluye el comando configurado para compilar con la ruta base adecuada:
 
 ```bash
-ng e2e
+npm run build:pages
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+---
 
-## Additional Resources
+## 📄 Licencia
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Este proyecto es privado / de código abierto para fines de desarrollo y demostración.
